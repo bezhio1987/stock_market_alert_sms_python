@@ -42,16 +42,17 @@ data_list = [value for (key, value) in stock_data.items()]
 yesterday_data = data_list[0]['4. close']
 day_before_yesterday_data = data_list[1]['4. close']
 
-difference = abs(float(yesterday_data) - float(day_before_yesterday_data))
-difference_percentage = (difference / float(yesterday_data)) * 100
-if difference_percentage > 4:
-    up_down = None
-    news = get_news()
-    if difference_percentage >= 0:
-        up_down = "🔺"
-    else:
-        up_down = "🔻"
+difference = (float(yesterday_data) - float(day_before_yesterday_data))
+up_down = None
+if difference > 0:
+    up_down = "🔺"
+else:
+    up_down = "🔻"
+difference_percentage = round((difference / float(yesterday_data)) * 100)
 
+
+if abs(difference_percentage) > 4:
+    news = get_news()
     formatted_news = [
         f"{stock_name} {up_down}:{int(difference_percentage)}%. \nHeadline: {item['title']}\nBrief: {item['description']}"
         for item in news]
